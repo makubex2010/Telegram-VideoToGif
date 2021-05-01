@@ -34,7 +34,6 @@ def convert_gif(unique_id):
 async def convert(message):
     file_id = message.video.file_id
     unique_id = message.video.file_unique_id
-    print(message.video)
     try:
         file_obj = await bot.get_file(file_id)
         file_path = file_obj.file_path
