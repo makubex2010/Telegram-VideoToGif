@@ -62,5 +62,10 @@ async def convert(message):
 async def anim(message):
     await message.reply("This is already an animation!")
 
+
+@dp.message_handler(commands=['start'])
+async def start(message):
+    await message.reply("Hello! I can convert video to GIF: just send me a video!")
+
 if __name__ == "__main__":
     executor.start_polling(dp)
