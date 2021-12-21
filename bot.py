@@ -11,9 +11,7 @@ from moviepy.video.fx.resize import resize
 from aiogram.utils.exceptions import FileIsTooBig
 
 
-with open("config.json", encoding='UTF-8') as file:
-    config = json.load(file)
-token = config["token"]
+token = os.getenv('BOT_TOKEN')
 bot = Bot(token=token)
 dp = Dispatcher(bot)
 
@@ -39,19 +37,19 @@ async def convert(message):
         file_path = file_obj.file_path
         await bot.download_file(file_path, f"{unique_id}.mp4")
     except FileIsTooBig:
-        await message.reply("File is too big, try to compress it.")
+        await message.reply("文件太大，請嘗試壓縮它。")
         return
     except Exception as e:
         traceback.print_exc()
-        await message.reply(f"There is an error during downloading:\n`{e}`", parse_mode="MarkdownV2")
+        await message.reply(f"下載過程中出現錯誤:\n`{e}`", parse_mode="MarkdownV2")
         return
-    await message.reply("Your video is converting, wait")
+    await message.reply("您的視頻正在轉換中，請稍候")
     try:
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, convert_gif, unique_id)
     except Exception as e:
         traceback.print_exc()
-        await message.reply(f"There is an error during converting:\n`{e}`", parse_mode="MarkdownV2")
+        await message.reply(f"轉換過程中出現錯誤:\n`{e}`", parse_mode="MarkdownV2")
         return
     await message.reply_animation(animation=types.InputFile(f"{unique_id}.gif"))
     os.remove(f"{unique_id}.mp4")
@@ -60,12 +58,12 @@ async def convert(message):
 
 @dp.message_handler(content_types=ContentType.ANIMATION)
 async def anim(message):
-    await message.reply("This is already an animation!")
+    await message.reply("這已經是動畫了！")
 
 
 @dp.message_handler(commands=['start'])
 async def start(message):
-    await message.reply("Hello! I can convert video to GIF: just send me a video!")
+    await message.reply("你好！ 我可以將視頻轉換為 GIF：只需向我發送視頻即可！")
 
 if __name__ == "__main__":
     executor.start_polling(dp)
