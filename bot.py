@@ -63,7 +63,7 @@ async def anim(message):
 
 @dp.message_handler(commands=['start'])
 async def start(message):
-    await message.reply("👋 嗨! @{message.from_user.username}\n\n🎥我是影片轉檔機器人[📺](https://telegra.ph/file/afc79d95f247655e0b476.mp4)\n\n發送你想要轉GIF的影片吧，長度不要超過15秒。")
+    await message.reply("👋 嗨! 🎥我是影片轉檔機器人[📺](https://telegra.ph/file/afc79d95f247655e0b476.mp4)\n\n發送你想要轉GIF的影片吧，長度不要超過15秒。")
 
 if __name__ == "__main__":
     executor.start_polling(dp)
