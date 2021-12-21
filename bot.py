@@ -37,19 +37,19 @@ async def convert(message):
         file_path = file_obj.file_path
         await bot.download_file(file_path, f"{unique_id}.mp4")
     except FileIsTooBig:
-        await message.reply("文件太大，請嘗試壓縮它。")
+        await message.reply("✖️ 文件太大，請嘗試壓縮它。")
         return
     except Exception as e:
         traceback.print_exc()
-        await message.reply(f"下載過程中出現錯誤:\n`{e}`", parse_mode="MarkdownV2")
+        await message.reply(f"✖️ 下載過程中出現錯誤:\n`{e}`", parse_mode="MarkdownV2")
         return
-    await message.reply("您的視頻正在轉換中，請稍候")
+    await message.reply("你的視頻正在轉換中，請稍候...")
     try:
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, convert_gif, unique_id)
     except Exception as e:
         traceback.print_exc()
-        await message.reply(f"轉換過程中出現錯誤:\n`{e}`", parse_mode="MarkdownV2")
+        await message.reply(f"✖️ 轉換過程中出現錯誤:\n`{e}`", parse_mode="MarkdownV2")
         return
     await message.reply_animation(animation=types.InputFile(f"{unique_id}.gif"))
     os.remove(f"{unique_id}.mp4")
@@ -63,7 +63,7 @@ async def anim(message):
 
 @dp.message_handler(commands=['start'])
 async def start(message):
-    await message.reply("你好！ 我可以將視頻轉換為 GIF：只需向我發送視頻即可！")
+    await message.reply("👋 嗨! @{message.from_user.username}\n\n🎥我是影片轉檔機器人[📺](https://telegra.ph/file/afc79d95f247655e0b476.mp4)\n\n發送你想要轉GIF的影片吧，長度不要超過15秒。")
 
 if __name__ == "__main__":
     executor.start_polling(dp)
